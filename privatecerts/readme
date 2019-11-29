@@ -1,0 +1,17 @@
+caddy -conf  /etc/caddy/Caddyfile
+
+cat /etc/caddy/Caddyfile
+tops.com:443  {
+    root /var/www/my-domain.com
+tls /root/privatecerts/tops.com.crt /root/privatecerts/tops.com.key {
+
+  ca  /root/privatecerts/rootCA.crt
+  clients    require
+}
+
+}
+
+
+###copy kops.com.key  kops.com.crt   rootCA.crt  to directory from where you will run curl command
+### add a local dns , using /etc/hosts  like  ::  192.168.20.3  tops.com , & hit with curl as below , make sure client certs with root cert are present in PWD
+curl   https://tops.com --cacert  rootCA.crt --cert  kops.com.crt --key kops.com.key
